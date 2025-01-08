@@ -24,14 +24,24 @@ ARG GID=0
 FROM --platform=$BUILDPLATFORM node:22-alpine3.20 AS build
 ARG BUILD_HASH
 
-WORKDIR /app
 
+WORKDIR /app
+RUN npm install -g cypress@13.15.0
 COPY package.json package-lock.json ./
 RUN npm ci
-
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV PATH=$PATH:/usr/local/lib/node_modules/cypress/bin
 COPY . .
 ENV APP_BUILD_HASH=${BUILD_HASH}
 RUN npm run build
+# WORKDIR /app
+
+# COPY package.json package-lock.json ./
+# RUN npm ci
+
+# COPY . .
+# ENV APP_BUILD_HASH=${BUILD_HASH}
+# RUN npm run build
 
 ######## WebUI backend ########
 FROM python:3.11-slim-bookworm AS base

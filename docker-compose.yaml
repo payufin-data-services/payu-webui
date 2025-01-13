@@ -1,34 +1,56 @@
 services:
+
   ollama:
-    volumes:
-      - ollama:/root/.ollama
+    image: ollama/ollama
     container_name: ollama
-    pull_policy: always
-    tty: true
-    restart: unless-stopped
-    image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
+    ports:
+      - "11434:11434"
+    volumes:
+      - /home/rahul.ghosh/open_web_ui/ollama-data:/root/.ollama
+    restart: always
+     
+  webui-db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=myapp_db
+      - POSTGRES_USER=myapp_user
+      - POSTGRES_PASSWORD=myapp_pass
+    ports:
+      - "5431:5431"
+    command: -p 5431
+    volumes:
+      - /home/rahul.ghosh/open_web_ui/open-web-ui-db:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U myapp_user -d myapp_db -p 5431" ]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+    restart: always
 
   open-webui:
-    build:
-      context: .
-      args:
-        OLLAMA_BASE_URL: '/ollama'
-      dockerfile: Dockerfile
-    image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
+    image: ghcr.io/open-webui/open-webui:main
     container_name: open-webui
-    volumes:
-      - open-webui:/app/backend/data
     depends_on:
+      - webui-db
       - ollama
     ports:
-      - ${OPEN_WEBUI_PORT-3000}:8080
+      - 3000:8080
     environment:
-      - 'OLLAMA_BASE_URL=http://ollama:11434'
       - 'WEBUI_SECRET_KEY='
+      - 'WEBUI_DB_HOST=webui-db'
+      - 'DATABASE_URL=postgresql://myapp_user:myapp_pass@webui-db:5431/myapp_db'
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
 
+  bedrock-gateway:
+    image: payu-bedrock-gateway
+    environment:
+      - AWS_REGION=ap-south-1
+      - DEBUG=true
+    ports:
+      - "8000:80"
+    restart: unless-stopped
+
 volumes:
   ollama: {}
-  open-webui: {}

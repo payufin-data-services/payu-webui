@@ -20,9 +20,8 @@ jobs:
       name: Build & push Docker image
       with:
         image: open-webui
-        platform: linux/arm64,linux/amd64
+        platform: linux/arm64
         enableBuildKit: true
-        multiPlatform: true
         tags: v1
         registry: 593537320251.dkr.ecr.ap-south-1.amazonaws.com
         dockerfile: Dockerfile

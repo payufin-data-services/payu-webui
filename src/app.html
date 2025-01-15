@@ -6,7 +6,7 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
 		<link rel="shortcut icon" href="/favicon/favicon.ico" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
-		<meta name="apple-mobile-web-app-title" content="Open WebUI" />
+		<meta name="apple-mobile-web-app-title" content="PayU Luna AI" />
 		<link rel="manifest" href="/favicon/site.webmanifest" />
 		<meta
 			name="viewport"
@@ -14,11 +14,11 @@
 		/>
 		<meta name="theme-color" content="#171717" />
 		<meta name="robots" content="noindex,nofollow" />
-		<meta name="description" content="Open WebUI" />
+		<meta name="description" content="PayU Luna AI" />
 		<link
 			rel="search"
 			type="application/opensearchdescription+xml"
-			title="Open WebUI"
+			title="PayU Luna AI"
 			href="/opensearch.xml"
 		/>
 
@@ -76,7 +76,7 @@
 			})();
 		</script>
 
-		<title>Open WebUI</title>
+		<title>PayU Luna AI</title>
 
 		%sveltekit.head%
 	</head>
@@ -166,15 +166,19 @@
 	html {
 		overflow-y: hidden !important;
 	}
+		#splash-screen {
+			background-image: url('/static/background.jpg');
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
 
-	#splash-screen {
-		background: #fff;
-	}
-
-	html.dark #splash-screen {
-		background: #000;
-	}
-
+		html.dark #splash-screen {
+			background-image: url('/static/background-dark.jpg');
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
 	html.dark #splash-screen img {
 		filter: invert(1);
 	}

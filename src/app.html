@@ -166,19 +166,15 @@
 	html {
 		overflow-y: hidden !important;
 	}
-		#splash-screen {
-			background-image: url('/static/background.jpg');
-			background-size: cover;
-			background-position: center;
-			background-repeat: no-repeat;
-		}
 
-		html.dark #splash-screen {
-			background-image: url('/static/background-dark.jpg');
-			background-size: cover;
-			background-position: center;
-			background-repeat: no-repeat;
-		}
+	#splash-screen {
+		background: #fff;
+	}
+
+	html.dark #splash-screen {
+		background: #000;
+	}
+
 	html.dark #splash-screen img {
 		filter: invert(1);
 	}

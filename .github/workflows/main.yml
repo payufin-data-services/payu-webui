@@ -32,7 +32,6 @@ jobs:
         with:
           image: open-webui
           platform: linux/arm64
-          enableBuildKit: true
           tags: v1
           registry: 593537320251.dkr.ecr.ap-south-1.amazonaws.com
           dockerfile: Dockerfile
